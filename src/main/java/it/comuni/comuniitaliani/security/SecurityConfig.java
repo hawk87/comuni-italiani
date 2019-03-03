@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @EnableWebSecurity
 public class SecurityConfig {
@@ -27,10 +28,17 @@ public class SecurityConfig {
                 .roles("USER", "ADMIN");
     }
 
+    @Bean
+    public AuthenticationSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler();
+    }
+
     @Configuration
     @Order(1)
     @EnableGlobalMethodSecurity(securedEnabled = true)
-    public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+    public class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+
+        @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .antMatcher("/api/**")
@@ -39,8 +47,13 @@ public class SecurityConfig {
         }
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Configuration
-    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    public class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -48,12 +61,8 @@ public class SecurityConfig {
                     .authorizeRequests()
                     .anyRequest().authenticated()
                     .and()
-                    .formLogin().permitAll();
+                    .formLogin().permitAll()
+                    .successHandler(loginSuccessHandler());
         }
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
