@@ -21,8 +21,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static it.comuni.comuniitaliani.Roles.ROLE_ADMIN;
-import static it.comuni.comuniitaliani.Roles.ROLE_USER;
+import static it.comuni.comuniitaliani.security.Roles.ROLE_ADMIN;
+import static it.comuni.comuniitaliani.security.Roles.ROLE_USER;
 import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;

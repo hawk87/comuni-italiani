@@ -1,4 +1,4 @@
-package it.comuni.comuniitaliani;
+package it.comuni.comuniitaliani.security;
 
 public class Roles {
     public final static String ROLE_USER = "ROLE_USER";

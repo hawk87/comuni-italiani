@@ -14,8 +14,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Collection;
 
-import static it.comuni.comuniitaliani.Roles.ROLE_ADMIN;
-import static it.comuni.comuniitaliani.Roles.ROLE_USER;
+import static it.comuni.comuniitaliani.security.Roles.ROLE_ADMIN;
+import static it.comuni.comuniitaliani.security.Roles.ROLE_USER;
 
 @Slf4j
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
