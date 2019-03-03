@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class SecurityConfig {
 
     @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("user")
                 .password(passwordEncoder().encode("password"))
@@ -28,16 +28,10 @@ public class SecurityConfig {
                 .roles("USER", "ADMIN");
     }
 
-    @Bean
-    public AuthenticationSuccessHandler loginSuccessHandler() {
-        return new LoginSuccessHandler();
-    }
-
     @Configuration
     @Order(1)
     @EnableGlobalMethodSecurity(securedEnabled = true)
     public class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
@@ -45,6 +39,12 @@ public class SecurityConfig {
                     .authorizeRequests()
                     .anyRequest().hasRole("USER");
         }
+
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler();
     }
 
     @Bean
@@ -53,8 +53,7 @@ public class SecurityConfig {
     }
 
     @Configuration
-    public class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
+    public class LoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
@@ -64,5 +63,6 @@ public class SecurityConfig {
                     .formLogin().permitAll()
                     .successHandler(loginSuccessHandler());
         }
+
     }
 }

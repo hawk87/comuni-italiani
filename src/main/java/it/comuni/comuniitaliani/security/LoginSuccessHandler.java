@@ -28,10 +28,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         clearAuthenticationAttributes(request);
     }
 
-    private void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-            throws IOException {
-
-        String targetUrl = determineTargetUrl(authentication);
+    private void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+        final String targetUrl = determineTargetUrl(authentication);
 
         if (response.isCommitted()) {
             log.debug("Response has already been committed. Unable to redirect to " + targetUrl);
@@ -45,7 +43,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         boolean isUser = false;
         boolean isAdmin = false;
 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         for (GrantedAuthority grantedAuthority : authorities) {
             if (grantedAuthority.getAuthority().equals(ROLE_USER)) {
@@ -67,7 +65,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private void clearAuthenticationAttributes(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+        final HttpSession session = request.getSession(false);
         if (session == null) {
             return;
         }
